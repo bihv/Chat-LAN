@@ -99,10 +99,10 @@ public class HomeClient {
 			              server.getRemoteSocketAddress()+"</span>");
 
 			          input = new BufferedReader(new InputStreamReader(server.getInputStream()));
-			          output = new PrintWriter(server.getOutputStream(), true);
+			          ChatClient.output = new PrintWriter(server.getOutputStream(), true);
 
 			          // send nickname to server
-			          output.println(name);
+			          ChatClient.output.println(name);
 
 			          // create new Read Thread
 			          read = new Read();
