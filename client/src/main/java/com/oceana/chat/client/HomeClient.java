@@ -24,13 +24,13 @@ public class HomeClient {
 	private JTextField textFieldPort;
 	private JTextField textFieldNickName;
 	
-	private String oldMsg = "";
+		private String oldMsg = "";
 	  private Thread read;
 	  private String serverName;
 	  private int PORT;
 	  private String name;
 	  public static BufferedReader input;
-	  PrintWriter output;
+	  public static  PrintWriter output;
 	  Socket server;
 	  public static String[] users;
 

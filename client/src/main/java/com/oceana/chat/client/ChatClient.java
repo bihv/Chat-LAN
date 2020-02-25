@@ -11,14 +11,21 @@ import java.awt.TextArea;
 import javax.swing.JTabbedPane;
 import javax.swing.JList;
 import javax.swing.AbstractListModel;
+import javax.swing.DefaultListModel;
+
 import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.Toolkit;
+import java.awt.event.ActionListener;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.awt.event.ActionEvent;
 
 public class ChatClient {
 
 	private JFrame frmOceanaChat;
-	public static JList listUserChat = new JList();
+	public static final JList listUserChat = new JList();
+	public static JList<HashMap<String, DefaultListModel<String>>> listRoomChat = new JList(); 
 	public static JTextPane textArea_Discu = new JTextPane();
 	/**
 	 * Launch the application.
@@ -48,7 +55,7 @@ public class ChatClient {
 	 */
 	private void initialize() {
 		frmOceanaChat = new JFrame();
-		frmOceanaChat.setIconImage(Toolkit.getDefaultToolkit().getImage("D:\\workspaces\\sts\\client\\resource\\Yahoo-Messenger-icon.png"));
+		frmOceanaChat.setIconImage(Toolkit.getDefaultToolkit().getImage("../client/resource/Yahoo-Messenger-icon.png"));
 		frmOceanaChat.setTitle("Oceana Chat");
 		frmOceanaChat.setBounds(100, 100, 901, 558);
 		frmOceanaChat.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -62,30 +69,19 @@ public class ChatClient {
 		tabbedPane.addTab("New tab", null, panel_1, null);
 		panel_1.setLayout(new BorderLayout(0, 0));
 		
-		JList listRoomChat = new JList();
-		listRoomChat.setModel(new AbstractListModel() {
-			String[] values = new String[] {"Oceana", "Oceana 2"};
-			public int getSize() {
-				return values.length;
-			}
-			public Object getElementAt(int index) {
-				return values[index];
-			}
-		});
+		
+		
 		panel_1.add(listRoomChat, BorderLayout.CENTER);
 		
 		Button buttonNewRoom = new Button("New room");
-		panel_1.add(buttonNewRoom, BorderLayout.SOUTH);
-		
-		listUserChat.setModel(new AbstractListModel() {
-			String[] values = new String[] {"Bi", "Nam", "Anh"};
-			public int getSize() {
-				return values.length;
-			}
-			public Object getElementAt(int index) {
-				return values[index];
+		buttonNewRoom.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RoomChat chat = new RoomChat();
+				chat.main(null);
 			}
 		});
+		panel_1.add(buttonNewRoom, BorderLayout.SOUTH);
+		
 		tabbedPane.addTab("Chat", null, listUserChat, null);
 		
 		Panel panel = new Panel();

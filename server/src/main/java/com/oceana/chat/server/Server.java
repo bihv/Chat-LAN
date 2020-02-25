@@ -12,7 +12,7 @@ import com.oceana.chat.server_client.*;
 public class Server {
 
 	private static int port;
-	private List<User> clients;
+	public static List<User> clients;
 	private ServerSocket server;
 
 	public static void main(String[] args) throws IOException {
