@@ -4,6 +4,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javax.swing.JTextPane;
+import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.HTMLEditorKit;
+
 
 class Read extends Thread {
     public void run() {
@@ -28,13 +32,25 @@ class Read extends Thread {
               }
               ChatClient.listUserChat.setListData(userList);
             }else{
-             // appendToPane(jtextFilDiscu, message);
+              appendToPane(ChatClient.textArea_Discu, message);
             }
           }
         }
         catch (IOException ex) {
           System.err.println("Failed to parse incoming message");
         }
+      }
+    }
+    
+    // send html to pane
+    private void appendToPane(JTextPane tp, String msg){
+      HTMLDocument doc = (HTMLDocument)tp.getDocument();
+      HTMLEditorKit editorKit = (HTMLEditorKit)tp.getEditorKit();
+      try {
+        editorKit.insertHTML(doc, doc.getLength(), msg, 0, 0, null);
+        tp.setCaretPosition(doc.getLength());
+      } catch(Exception e){
+        e.printStackTrace();
       }
     }
   }
