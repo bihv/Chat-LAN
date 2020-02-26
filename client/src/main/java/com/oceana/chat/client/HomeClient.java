@@ -22,7 +22,7 @@ public class HomeClient {
 	private JFrame frame;
 	private JTextField textFieldIP;
 	private JTextField textFieldPort;
-	private JTextField textFieldNickName;
+	public static JTextField textFieldNickName;
 	
 		private String oldMsg = "";
 	  private Thread read;
