@@ -157,43 +157,21 @@ public class ChatClient {
 		tableEmoticon.setBounds(248, 520, 260, 151);
 		frmOceanaChat.getContentPane().add(tableEmoticon);
 
-		listUserChat.addMouseListener(new MouseListener() {
-
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			public void mouseClicked(MouseEvent e) {
-
-				Document doc = Jsoup.parse(listUserChat.getSelectedValue().toString());
-				userName = doc.body().text();
-				System.out.println("User name: " + userName);
-				if(!message_User.isEmpty()) {
-					for (Map.Entry<String, String> entry : message_User.entrySet()) {
-						String key = entry.getKey();
-						if (key.equals(userName)) {
-							textArea_Discu.setText(entry.getValue());
-						}
-					}
-
-				}
+		listUserChat.addListSelectionListener(new ListSelectionListener() {
 			
+			public void valueChanged(ListSelectionEvent e) {
+				if(e.getValueIsAdjusting()) {
+					Document doc = Jsoup.parse(listUserChat.getSelectedValue().toString());
+					userName = doc.body().text();
+					System.out.println("User name: " + userName);
+					for(Map.Entry<String, String> entry : message_User.entrySet()) {
+					    String key = entry.getKey();
+					    if(key.equals(userName)) {
+					    	textArea_Discu.setText(entry.getValue());
+					    }
+					}
+					
+				}
 			}
 		});
 	}
