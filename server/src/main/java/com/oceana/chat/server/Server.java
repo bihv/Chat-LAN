@@ -5,8 +5,11 @@ import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Scanner;
+
 import com.oceana.chat.server_client.*;
 
 public class Server {
@@ -14,12 +17,13 @@ public class Server {
 	private static int port;
 	public static List<User> clients;
 	private ServerSocket server;
+	MessageUser messageUser;
 
 	public static void main(String[] args) throws IOException {
 		System.out.println("Please enter your port: ");
 		InputStream stream = System.in;
 		Scanner scanner = new Scanner(stream);
-		
+
 		port = scanner.nextInt();
 		scanner.close();
 		new Server(port).run();
@@ -28,6 +32,7 @@ public class Server {
 	public Server(int port1) {
 		port = port1;
 		this.clients = new ArrayList<User>();
+		messageUser = new MessageUser();
 	}
 
 	public void run() throws IOException {
@@ -92,13 +97,14 @@ public class Server {
 			if (client.getNickname().equals(user) && client != userSender) {
 				find = true;
 				userSender.getOutStream().println(userSender.toString() + " -> " + client.toString() + ": " + msg);
+				
 				client.getOutStream()
 						.println("(<b>Private</b>)" + userSender.toString() + "<span>: " + msg + "</span>");
 			}
+			
 		}
 		if (!find) {
 			userSender.getOutStream().println(userSender.toString() + " -> (<b>no one!</b>): " + msg);
 		}
 	}
 }
-

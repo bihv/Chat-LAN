@@ -30,6 +30,7 @@ public class HomeClient {
 	  private int PORT;
 	  private String name;
 	  public static BufferedReader input;
+	  
 	  public static  PrintWriter output;
 	  Socket server;
 	  public static String[] users;
@@ -99,11 +100,12 @@ public class HomeClient {
 			              server.getRemoteSocketAddress()+"</span>");
 
 			          input = new BufferedReader(new InputStreamReader(server.getInputStream()));
+			      
 			          ChatClient.output = new PrintWriter(server.getOutputStream(), true);
 
 			          // send nickname to server
 			          ChatClient.output.println(name);
-
+			          
 			          // create new Read Thread
 			          read = new Read();
 			          read.start();

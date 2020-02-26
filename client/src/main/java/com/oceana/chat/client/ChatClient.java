@@ -13,6 +13,8 @@ import javax.swing.table.DefaultTableModel;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import com.oceana.chat.server_client.MessageUser;
+
 import java.awt.Panel;
 import java.awt.TextArea;
 import javax.swing.JTabbedPane;
@@ -50,7 +52,6 @@ public class ChatClient {
 	public static PrintWriter output;
 	private String oldMsg = "";
 	String userName = "";
-	HashMap<String, HashMap<String, String>> message_User = new HashMap<String, HashMap<String,String>>();
 	private JTable tableEmoticon;
 
 	/**
@@ -164,15 +165,15 @@ public class ChatClient {
 					Document doc = Jsoup.parse(listUserChat.getSelectedValue().toString());
 					userName = doc.body().text();
 					System.out.println("User name: " + userName);
-					if (message_User != null) {
-						for (Map.Entry<String, HashMap<String, String>> entry : message_User.entrySet()) {
+					if (MessageUser.message_User != null) {
+						for (Map.Entry<String, HashMap<String, String>> entry : MessageUser.message_User.entrySet()) {
 							String userSender = HomeClient.textFieldNickName.getText();
-							if (userSender.equals(entry.getKey())) {
+							if (userName.equals(entry.getKey())) {
 								for (Map.Entry<String, String> entry1 : entry.getValue().entrySet()) {
-									if(entry1.getKey().equals(userName)) {
-										textArea_Discu.setText(entry1.getValue());										
-									}else {
-										textArea_Discu.setText(null);		
+									if (entry1.getKey().equals(userSender)) {
+										textArea_Discu.setText(entry1.getValue());
+									} else {
+										textArea_Discu.setText(null);
 									}
 								}
 							}
@@ -186,6 +187,7 @@ public class ChatClient {
 
 	public void sendMessage() {
 		try {
+			String messageForUser = "";
 			String message = userName.trim().length() > 0 ? userName + " " + textArea.getText().trim()
 					: textArea.getText().trim();
 			if (message.equals("")) {
@@ -195,9 +197,23 @@ public class ChatClient {
 			output.println(message);
 			textArea.requestFocus();
 			textArea.setText(null);
+
+			
+			for (Map.Entry<String, HashMap<String, String>> entry : MessageUser.message_User.entrySet()) {
+				String userSender = HomeClient.textFieldNickName.getText();
+				if (userName.equals(entry.getKey())) {
+					for (Map.Entry<String, String> entry1 : entry.getValue().entrySet()) {
+						if (entry1.getKey().equals(userSender)) {
+							messageForUser += entry1.getValue();
+						} 
+					}
+				}
+			}
+			
 			HashMap<String, String> messageToUser = new HashMap<String, String>();
-			messageToUser.put(userName, message);
-			message_User.put(HomeClient.textFieldNickName.getText(), messageToUser);
+			messageToUser.put(HomeClient.textFieldNickName.getText(), messageForUser + message);
+			MessageUser.message_User.put(userName, messageToUser);
+
 		} catch (Exception ex) {
 			JOptionPane.showMessageDialog(null, ex.getMessage());
 			System.exit(0);
